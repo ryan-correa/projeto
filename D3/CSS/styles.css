@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.background {
+    background-image: url("../images/water-background.gif");
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-attachment: fixed;
+    filter: blur(10px) brightness(0.6); 
+    z-index: -1;
+}
+header {
+    border-radius: 10px;
+    font-family: Didot, serif; /* Fonte do cabeçalho */
+    font-size: 20px;
+    background-color: #009AA5; /* Cor de fundo do cabeçalho */
+    padding: 10px 20px; /* Espaçamento interno */
+    display: flex; /* Usando flexbox para alinhar os itens */
+    justify-content: space-between; /* Espaço entre os itens */
+    align-items: center; /* Alinhamento vertical */
+}
+nav {
+    display: flex; /* Usando flexbox para os botões */
+}
+nav a {
+    border-radius: 10px; /* Borda arredondada */
+    color: white; /* Cor do texto */
+    text-decoration: none; /* Remover sublinhado */
+    padding: 10px 15px; /* Espaçamento interno dos botões */
+    margin: 10px; /* Espaçamento externo dos botões */
+    transition: background-color 0.3s; /* Efeito de transição */
+}
+nav a:hover {
+    background-color: #2e27af; /* Cor de fundo ao passar o mouse */
+}
