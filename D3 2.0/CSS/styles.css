@@ -1,20 +1,26 @@
-body {
-    font-family: Arial, sans-serif;
+/* Resetando margens e padding */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
+
+/* Corpo */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* HEADER */
 header {
-    position: relative; 
-    font-family: Didot, serif; 
-    font-size: 10px;
-    background-color: #009AA5; 
-    padding: 8px 18px; 
-    display: flex; /* Usando flexbox para alinhar os itens */
-    justify-content: space-between; /* Espaço entre os itens */
-    align-items: center; 
-    overflow: hidden; /* Esconde o que sai da header */
-    height: 50px; 
+    background-color: #009AA5;
+    padding: 8px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 50px;
 }
+
 header::before {
     content: '';
     position: absolute;
@@ -22,190 +28,194 @@ header::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url(../images/water-background.gif); 
+    background-image: url(../images/water-background.gif);
     background-size: cover;
     background-position: center bottom; /* Foca na parte inferior da imagem */
-    filter: blur(8px); 
+    filter: blur(8px);
     z-index: 1; /* Coloca a imagem no fundo */
 }
-header::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.2); /* Camada escura */
-    z-index: 2; /* Coloca a camada por cima do GIF */
+
+header h1 {
+    color: white;
+    font-size: 20px;
+    z-index: 3;
 }
-h1 {
-    position: relative;
-    z-index: 3; /* Coloca o título por cima do background */
-    color: white; 
-}
-.search {
-    position: relative;
-    z-index: 3; 
-    margin: 10px 0; 
-}
+
+/* Wrapper de busca ajustado */
 .search-wrapper {
-    position: relative; /* Necessário para posicionar a lupa na barra de pesquisa */
-}
-.search-input {
-    margin-left: 40px; 
-    padding: 10px 40px 10px 40px; 
-    border-radius: 20px; 
-    border: none; 
-    outline: none; /* Remove o contorno quando foca */
-    font-size: 16px;
-    width: 450px; 
-    background-color: rgba(255, 255, 255, 0.8); 
-    backdrop-filter: blur(10px); 
-}
-.search-icon {
-    position: absolute; /* Posiciona a lupa dentro da barra de pesquisa */
-    right: 10px; 
-    top: 50%; 
-    transform: translateY(-50%); /* Ajusta para centralizar certo */
-    font-size: 18px; 
-    color: #333; 
-}
-.search-input::placeholder {
-    color: #999; 
-}
-nav {
-    display: flex; /* Usando flexbox pros botões */
     position: relative;
-    z-index: 3; 
+    z-index: 2; /* Coloca o campo de busca sobre a imagem */
 }
+
+.search-input {
+    padding: 10px;
+    padding-left: 40px;
+    border-radius: 20px;
+    width: 450px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    font-size: 16px;
+    position: relative; /* Adiciona posição relativa ao input de busca */
+    z-index: 3; /* Garante que o campo de busca esteja acima da imagem */
+}
+
+.search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #333;
+}
+
+nav {
+    display: flex;
+    z-index: 3;
+}
+
 nav a {
-    font-size: 15px; 
-    border-radius: 10px; 
-    color: white; 
-    text-decoration: none; 
-    padding: 15px 20px; 
-    margin: 10px; 
-    transition: background-color 0.5s; /* Efeito de transição */
+    font-size: 15px;
+    border-radius: 10px;
+    color: white;
+    padding: 15px 20px;
+    margin: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s;
 }
+
 nav a:hover {
-    background-color: #2e27af; 
+    background-color: #2e27af;
 }
- /* Áreas do body */
- .container {
-    display: flex; /* Usando flexbox para o layout das áreas */
-    width: 100%;
-    height: 100%; 
-    height: calc(100vh - 67px); /* Altura total menos a altura do header */
+
+/* Conteúdo Principal */
+.container {
+    display: flex;
+    height: calc(100vh - 67px); /* Altura total - altura do header */
 }
+
 .left-area {
-    width: 20%; 
-    background-color: #aed6fe7c; 
-    padding: 20px; 
-    display: flex; 
-    flex-direction: column; /* Coloca os itens em coluna */
-;
+    width: 20%;
+    background-color: #aed6fe7c;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
 }
+
 .right-area {
-    width: 80%; 
-    background-color: #fff; 
-    padding: 20px; 
+    width: 80%;
+    padding: 20px;
 }
-/* Estilo do modal */
-.modal {
-    display: none; /* Escondido por padrão */
+
+input[type="button"] {
+    margin: 5px 0;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #3498db;
+    color: white;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+input[type="button"]:hover {
+    background-color: #2e27af;
+}
+
+/* Modal */
+.modal, .modal-info {
+    display: none;
     position: fixed;
     z-index: 1000;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro */
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-
-.modal-content {
+.modal-content, .modal-info-content {
     background-color: #fefefe;
-    margin: 15% auto; /* Margem superior e centralizado */
-    padding: 20px; 
-    border: 1px solid #888; 
-    border-radius: 12px; 
-    width: 40%; 
-    max-width: 500px; 
-    text-align: center; 
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
 }
 
-
-.modal-content h3 {
-    font-weight: bold; /* Deixa o texto em negrito */
-    margin-bottom: 20px; 
-}
-
-
-form {
-    display: flex;
-    flex-direction: column; /* Coluna para os campos do formulário */
-    align-items: stretch; 
-}
-
-
-label {
-    margin-top: 10px;
-    text-align: left; 
-}
-
-
-.modal-input {
-    padding: 10px; 
-    margin-top: 5px; 
-    border: 1px solid #ccc; 
-    border-radius: 4px; 
-    width: 90%; 
-    max-width: 90%; 
-    margin-left: auto; 
-    margin-right: auto; 
-}
-
-
-form button {
-    background-color: #007BFF; 
-    color: #fff; 
-    border: none; 
-    border-radius: 4px; 
-    padding: 10px; 
-    margin-top: 10px; 
-    cursor: pointer; 
-    transition: background-color 0.3s; /* Transição suave para a cor de fundo */
-}
-
-/* Efeito ao passar o mouse no botão de salvar */
-form button:hover {
-    background-color: #0056b3; 
-}
-
-.close {
+.close, .close-info {
     color: #aaa;
-    float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
 }
 
-.close:hover {
-    color: #000;
+.close:hover, .close-info:hover {
+    color: black;
 }
 
-#Contatos {
-    background-color: #007BFF; 
-    color: #fff; 
-    border: none; 
-    border-radius: 8px; 
-    padding: 10px 10px; 
-    font-size: 16px; 
-    cursor: pointer; 
-    transition: background-color 0.3s, transform 0.3s; /* Transição suave para a cor de fundo e transformação */
+/* Formulários do modal */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
-#Contatos:hover {
-    background-color: #0056b3; 
-    transform: scale(1.05); /* Aumenta o tamanho do botão */
+label {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.modal-input {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 90%;
+}
+
+form button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para os contatos */
+.contatos-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Pequeno espaço entre os contatos */
+    margin-top: 20px; /* Ajuste para o espaço superior */
+}
+
+/* Cada contato */
+.contato {
+    position: relative;
+    display: flex;
+    align-items: center; /* Alinha o conteúdo do contato */
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: left; /* Alinha o texto à esquerda */
+}
+
+/* Ajuste do texto do contato */
+.contato span {
+    margin-left: 40px; /* Espaço após a imagem */
 }
