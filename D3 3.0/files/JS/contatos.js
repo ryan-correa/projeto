@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Seleção dos elementos do DOM
+    // [Seleção dos elementos do DOM - mantido igual]
     const btnAdicionarContato = document.getElementById('btn-adicionar-contato');
     const modalContatos = document.getElementById('modal-contatos');
     const closeModalBtn = document.querySelector('.close');
@@ -16,16 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const formularioEditar = document.getElementById('formulario-editar');
     let contatoAtual = null;
 
-    // Funções para o modal de adicionar contato
-    function openModal() {
-        modalContatos.style.display = 'block';
-    }
-
-    function closeModal() {
-        modalContatos.style.display = 'none';
-    }
-
-    // Funções para o modal de informações
+    // [Funções de modal - mantidas iguais]
+    function openModal() { modalContatos.style.display = 'block'; }
+    function closeModal() { modalContatos.style.display = 'none'; }
     function openInfoModal(nome, telefone, email) {
         document.getElementById('info-nome').textContent = nome;
         document.getElementById('info-telefone').textContent = telefone;
@@ -33,162 +26,136 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('modal-info').style.display = 'block';
         addToFrequentes(nome, telefone, email);
     }
-
-    function closeInfoModal() {
-        document.getElementById('modal-info').style.display = 'none';
-    }
-
-    // Funções para o modal de erro
+    function closeInfoModal() { document.getElementById('modal-info').style.display = 'none'; }
     function openErroModal(mensagem) {
         mensagemErro.textContent = mensagem;
         modalErro.style.display = 'block';
-        setTimeout(function() {
-            modalErro.style.display = 'none';
-        }, 2000);
+        setTimeout(() => modalErro.style.display = 'none', 2000);
     }
-
-    // Funções para o modal de edição
     function openEditarModal(contato) {
-        if (!contato) {
-            console.error("Erro: Contato não definido!");
-            return;
-        }
+        if (!contato) return console.error("Erro: Contato não definido!");
         contatoAtual = contato;
         document.getElementById('editar-nome').value = contato.dataset.nome || '';
         document.getElementById('editar-telefone').value = contato.dataset.telefone || '';
         document.getElementById('editar-email').value = contato.dataset.email || '';
         modalEditar.style.display = 'block';
     }
-
     function closeEditarModal() {
         modalEditar.style.display = 'none';
         contatoAtual = null;
     }
 
-    // Função auxiliar para atualizar um contato específico
+    // [Funções auxiliares - mantidas iguais]
     function atualizarContato(contatoElement, nome, telefone, email) {
-        // Atualizar dataset
         contatoElement.dataset.nome = nome;
         contatoElement.dataset.telefone = telefone;
         contatoElement.dataset.email = email;
-
-        // Atualizar exibição
         const nomeElemento = contatoElement.querySelector('.nome-text');
-        if (nomeElemento) {
-            nomeElemento.textContent = nome;
-        }
+        if (nomeElemento) nomeElemento.textContent = nome;
     }
-
-    // Função para atualizar contatos frequentes
     function atualizarContatosFrequentes(nomeAntigo, telefoneAntigo, emailAntigo, novoNome, novoTelefone, novoEmail) {
         const contatosFrequentes = listaContatosFrequentes.querySelectorAll('.contato-nome');
-        
         contatosFrequentes.forEach(contato => {
-            if (contato.dataset.nome === nomeAntigo || 
-                contato.dataset.telefone === telefoneAntigo || 
-                contato.dataset.email === emailAntigo) {
-                
+            if (contato.dataset.nome === nomeAntigo || contato.dataset.telefone === telefoneAntigo || contato.dataset.email === emailAntigo) {
                 atualizarContato(contato, novoNome, novoTelefone, novoEmail);
             }
         });
     }
-
-    // Funções auxiliares
     function isContatoExistente(nome, telefone, email, contatoIgnorar = null) {
         const contatos = listaContatos.querySelectorAll('.contato-nome');
         for (const contato of contatos) {
             if (contato === contatoIgnorar) continue;
-            
-            if (contato.dataset.nome === nome || 
-                contato.dataset.telefone === telefone || 
-                contato.dataset.email === email) {
-                return true;
-            }
+            if (contato.dataset.nome === nome || contato.dataset.telefone === telefone || contato.dataset.email === email) return true;
         }
-
         const contatosFrequentes = listaContatosFrequentes.querySelectorAll('.contato-nome');
         for (const contato of contatosFrequentes) {
             if (contato === contatoIgnorar) continue;
-            
-            if (contato.dataset.nome === nome || 
-                contato.dataset.telefone === telefone || 
-                contato.dataset.email === email) {
-                return true;
-            }
+            if (contato.dataset.nome === nome || contato.dataset.telefone === telefone || contato.dataset.email === email) return true;
         }
-
         return false;
     }
-
     function addToFrequentes(nome, telefone, email) {
+        if (isContatoFrequente(nome, telefone, email)) return;
         const contatoFrequenteDiv = document.createElement('div');
-        contatoFrequenteDiv.classList.add('contato-nome');
-        contatoFrequenteDiv.classList.add('estilizado');
+        contatoFrequenteDiv.classList.add('contato-nome', 'estilizado');
         contatoFrequenteDiv.innerHTML = `<span class="nome-text">${nome}</span>`;
         contatoFrequenteDiv.dataset.nome = nome;
         contatoFrequenteDiv.dataset.telefone = telefone;
         contatoFrequenteDiv.dataset.email = email;
-
-        if (!isContatoFrequente(nome, telefone, email)) {
-            contatoFrequenteDiv.onclick = function() {
-                openInfoModal(nome, telefone, email);
-            };
-            listaContatosFrequentes.appendChild(contatoFrequenteDiv);
-        }
+        contatoFrequenteDiv.onclick = () => openInfoModal(nome, telefone, email);
+        listaContatosFrequentes.appendChild(contatoFrequenteDiv);
     }
-
     function isContatoFrequente(nome, telefone, email) {
         const contatosFrequentes = listaContatosFrequentes.getElementsByClassName('contato-nome');
-        for (let i = 0; i < contatosFrequentes.length; i++) {
-            if (contatosFrequentes[i].dataset.nome === nome || contatosFrequentes[i].dataset.telefone === telefone || contatosFrequentes[i].dataset.email === email) {
-                return true;
-            }
+        for (let contato of contatosFrequentes) {
+            if (contato.dataset.nome === nome || contato.dataset.telefone === telefone || contato.dataset.email === email) return true;
         }
         return false;
     }
 
-    // FUNÇÃO ATUALIZADA COM CONFIRMAÇÃO
+    // FUNÇÃO DE REMOÇÃO COM SweetAlert2 (ATUALIZADA)
     function removerContato(nome, telefone, email) {
-        const confirmacao = confirm(`Tem certeza que deseja remover "${nome}"?`);
-        
-        if (confirmacao) {
-            const contatos = listaContatos.getElementsByClassName('contato-nome');
-            for (let i = 0; i < contatos.length; i++) {
-                if (contatos[i].dataset.nome === nome && contatos[i].dataset.telefone === telefone && contatos[i].dataset.email === email) {
-                    contatos[i].style.transition = 'opacity 0.3s ease';
-                    contatos[i].style.opacity = '0';
-                    setTimeout(() => contatos[i].remove(), 300);
-                }
-            }
+        Swal.fire({
+            title: 'Confirmar remoção',
+            html: `Você realmente deseja remover <b>${nome}</b> dos seus contatos?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, remover!',
+            cancelButtonText: 'Cancelar',
+            background: '#f8f9fa',
+            iconColor: '#dc3545'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Remove com animação
+                const removerComEfeito = (elemento) => {
+                    elemento.style.transition = 'all 0.3s ease';
+                    elemento.style.transform = 'scale(0.9)';
+                    elemento.style.opacity = '0';
+                    setTimeout(() => elemento.remove(), 300);
+                };
 
-            const contatosFrequentes = listaContatosFrequentes.getElementsByClassName('contato-nome');
-            for (let i = 0; i < contatosFrequentes.length; i++) {
-                if (contatosFrequentes[i].dataset.nome === nome && contatosFrequentes[i].dataset.telefone === telefone && contatosFrequentes[i].dataset.email === email) {
-                    contatosFrequentes[i].style.transition = 'opacity 0.3s ease';
-                    contatosFrequentes[i].style.opacity = '0';
-                    setTimeout(() => contatosFrequentes[i].remove(), 300);
-                }
-            }
-        }
-    }
+                // Remove da lista principal
+                Array.from(listaContatos.getElementsByClassName('contato-nome')).forEach(contato => {
+                    if (contato.dataset.nome === nome && 
+                        contato.dataset.telefone === telefone && 
+                        contato.dataset.email === email) {
+                        removerComEfeito(contato);
+                    }
+                });
 
-    function adicionarEventosDeEdicao() {
-        const botoesEditar = document.querySelectorAll('.btn-editar-contato');
-        
-        botoesEditar.forEach(botao => {
-            botao.addEventListener('click', function(event) {
-                event.stopPropagation();
-                const contatoDiv = event.target.closest('.contato-nome');
-                if (contatoDiv) {
-                    openEditarModal(contatoDiv);
-                } else {
-                    console.error("Erro: não foi possível encontrar o elemento do contato!");
-                }
-            });
+                // Remove da lista de frequentes
+                Array.from(listaContatosFrequentes.getElementsByClassName('contato-nome')).forEach(contato => {
+                    if (contato.dataset.nome === nome && 
+                        contato.dataset.telefone === telefone && 
+                        contato.dataset.email === email) {
+                        removerComEfeito(contato);
+                    }
+                });
+
+                // Feedback visual
+                Swal.fire({
+                    title: 'Removido!',
+                    text: `O contato ${nome} foi removido com sucesso.`,
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            }
         });
     }
 
-    // Função para alternar o estado de favorito
+    // [Restante do código - mantido igual]
+    function adicionarEventosDeEdicao() {
+        document.querySelectorAll('.btn-editar-contato').forEach(botao => {
+            botao.addEventListener('click', function(event) {
+                event.stopPropagation();
+                const contatoDiv = event.target.closest('.contato-nome');
+                contatoDiv ? openEditarModal(contatoDiv) : console.error("Elemento do contato não encontrado!");
+            });
+        });
+    }
     function toggleFavorito(contatoDiv, btnFavoritar) {
         if (contatoDiv.classList.contains('favorito')) {
             contatoDiv.classList.remove('favorito');
@@ -201,10 +168,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event Listeners
+    // [Event Listeners - mantidos iguais]
     formularioContato.addEventListener('submit', function(event) {
         event.preventDefault();
-
         const nome = document.getElementById('nome').value;
         const telefone = document.getElementById('telefone').value;
         const email = document.getElementById('email').value;
@@ -215,14 +181,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const contatoDiv = document.createElement('div');
-        contatoDiv.classList.add('contato-nome');
-        contatoDiv.classList.add('estilizado');
-        contatoDiv.style.opacity = 0;
-        setTimeout(() => {
-            contatoDiv.style.transition = 'opacity 0.5s ease';
-            contatoDiv.style.opacity = 1;
-        }, 10);
-
+        contatoDiv.classList.add('contato-nome', 'estilizado');
+        contatoDiv.style.opacity = '0';
+        setTimeout(() => contatoDiv.style.opacity = '1', 10);
         contatoDiv.innerHTML = `<span class="nome-text">${nome}</span>`;
         contatoDiv.dataset.nome = nome;
         contatoDiv.dataset.telefone = telefone;
@@ -232,109 +193,78 @@ document.addEventListener('DOMContentLoaded', function() {
         const btnFavoritar = document.createElement('button');
         btnFavoritar.classList.add('btn-favoritar');
         btnFavoritar.textContent = '⭐';
-        contatoDiv.appendChild(btnFavoritar);
-
-        btnFavoritar.addEventListener('click', function(event) {
-            event.stopPropagation();
+        btnFavoritar.addEventListener('click', (e) => {
+            e.stopPropagation();
             toggleFavorito(contatoDiv, btnFavoritar);
         });
+        contatoDiv.appendChild(btnFavoritar);
 
-        const btnRemoverContato = document.createElement('button');
-        btnRemoverContato.classList.add('btn-remover-contato');
-        btnRemoverContato.textContent = '🗑️';
-        contatoDiv.appendChild(btnRemoverContato);
-        
-        const btnEditarContato = document.createElement('button');
-        btnEditarContato.classList.add('btn-editar-contato');
-        btnEditarContato.textContent = '✏️';
-        btnEditarContato.addEventListener('click', function(event) {
-            event.stopPropagation();
-            openEditarModal(contatoDiv);
-        });
-        contatoDiv.appendChild(btnEditarContato);
-
-        contatoDiv.onclick = function() {
-            openInfoModal(nome, telefone, email);
-        };
-        listaContatos.appendChild(contatoDiv);
-
-        formularioContato.reset();
-        closeModal();
-
-        // EVENT LISTENER ATUALIZADO PARA REMOÇÃO
-        btnRemoverContato.addEventListener('click', function(event) {
-            event.stopPropagation();
+        // Botão de remover (com SweetAlert2)
+        const btnRemover = document.createElement('button');
+        btnRemover.classList.add('btn-remover-contato');
+        btnRemover.textContent = '🗑️';
+        btnRemover.addEventListener('click', (e) => {
+            e.stopPropagation();
             removerContato(nome, telefone, email);
         });
+        contatoDiv.appendChild(btnRemover);
+
+        // Botão de editar
+        const btnEditar = document.createElement('button');
+        btnEditar.classList.add('btn-editar-contato');
+        btnEditar.textContent = '✏️';
+        btnEditar.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openEditarModal(contatoDiv);
+        });
+        contatoDiv.appendChild(btnEditar);
+
+        contatoDiv.onclick = () => openInfoModal(nome, telefone, email);
+        listaContatos.appendChild(contatoDiv);
+        formularioContato.reset();
+        closeModal();
     });
 
     formularioEditar.addEventListener('submit', function(event) {
         event.preventDefault();
+        if (!contatoAtual) return console.error("Nenhum contato selecionado para edição!");
 
-        if (!contatoAtual) {
-            console.error("Erro: Nenhum contato selecionado para edição!");
-            return;
-        }
-
-        // Obter novos valores
         const novoNome = document.getElementById('editar-nome').value;
         const novoTelefone = document.getElementById('editar-telefone').value;
         const novoEmail = document.getElementById('editar-email').value;
 
-        // Verificar se já existe outro contato com os mesmos dados
         if (isContatoExistente(novoNome, novoTelefone, novoEmail, contatoAtual)) {
             openErroModal('Já existe um contato com esses dados atualizados.');
             return;
         }
 
-        // Obter dados antigos para atualização
         const nomeAntigo = contatoAtual.dataset.nome;
         const telefoneAntigo = contatoAtual.dataset.telefone;
         const emailAntigo = contatoAtual.dataset.email;
 
-        // Atualizar o contato principal
         atualizarContato(contatoAtual, novoNome, novoTelefone, novoEmail);
-
-        // Atualizar contatos frequentes correspondentes
         atualizarContatosFrequentes(nomeAntigo, telefoneAntigo, emailAntigo, novoNome, novoTelefone, novoEmail);
-
         closeEditarModal();
     });
 
-    // Event Listeners para fechar modais
+    // [Outros listeners - mantidos iguais]
     closeModalBtn.addEventListener('click', closeModal);
-    closeErroBtn.addEventListener('click', function() {
-        modalErro.style.display = 'none';
-    });
+    closeErroBtn.addEventListener('click', () => modalErro.style.display = 'none');
     closeEditarBtn.addEventListener('click', closeEditarModal);
-
-    // Event Listeners para navegação
-    document.getElementById('btn-contatos').addEventListener('click', function() {
+    document.getElementById('btn-contatos').addEventListener('click', () => {
         contatosArea.style.display = 'block';
         contatosFrequentesArea.style.display = 'none';
     });
-
-    document.getElementById('btn-contatos-frequentes').addEventListener('click', function() {
+    document.getElementById('btn-contatos-frequentes').addEventListener('click', () => {
         contatosArea.style.display = 'none';
         contatosFrequentesArea.style.display = 'block';
     });
-
     btnAdicionarContato.addEventListener('click', openModal);
-
-    // Fechar modais ao clicar fora
     window.onclick = function(event) {
-        if (event.target == modalContatos) {
-            closeModal();
-        }
-        if (event.target == document.getElementById('modal-info')) {
-            closeInfoModal();
-        }
-        if (event.target == modalErro) {
-            modalErro.style.display = 'none';
-        }
-        if (event.target == modalEditar) {
-            closeEditarModal();
-        }
+        if (event.target == modalContatos) closeModal();
+        if (event.target == document.getElementById('modal-info')) closeInfoModal();
+        if (event.target == modalErro) modalErro.style.display = 'none';
+        if (event.target == modalEditar) closeEditarModal();
     }
 
     // Inicialização
