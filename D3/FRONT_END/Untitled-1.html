@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda D3</title>
+    <link rel="stylesheet" href="CSS/style.css">
+
+    <style>
+        .contato {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .nome-contato {
+            font-weight: bold;
+        }
+
+        .icones {
+            display: flex;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .icone-editar:hover,
+        .icone-excluir:hover {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- HEADER -->
+    <header>
+        <h1>AGENDA D3</h1>
+        <div class="search">
+            <div class="search-wrapper">
+                <input type="text" class="search-input" placeholder="Pesquisar">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+        <nav>
+            <a href="sobreaD3.html">SOBRE A D3</a>
+            <a href="#quem-somos">QUEM SOMOS</a>
+            <a href="#contatos">CONTATOS</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <!-- Lado Esquerdo -->
+        <div class="left-area">
+            <input type="button" id="btn-adicionar-contato" value="➕ ADICIONAR CONTATOS">
+            <input type="button" id="btn-contatos" value="👥 CONTATOS">
+            <input type="button" id="btn-contatos-frequentes" value="🧑‍🤝‍🧑 CONTATOS FREQUENTES">
+    
+            <!-- Modal de Adicionar Contatos -->
+            <div id="modal-contatos" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Adicionar Novo Contato</h2>
+                    <form id="formulario-contato">
+                        <label for="nome">Nome:</label>
+                        <input type="text" class="modal-input" id="nome" placeholder="Digite o nome" required>
+                        <label for="telefone">Telefone:</label>
+                        <input type="tel" class="modal-input" id="telefone" placeholder="Digite o telefone" required>
+                        <label for="email">E-mail:</label>
+                        <input type="email" class="modal-input" id="email" placeholder="Digite o e-mail">
+                        <button type="submit">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Lado Direito -->
+        <div class="right-area">
+            <div id="contatos-area" class="contatos-area">
+                <h2>Contatos</h2>
+                <div id="lista-contatos">
+                    <!-- Contato de exemplo -->
+                    <div class="contato">
+                        <span class="nome-contato">João Silva</span>
+                        <div class="icones">
+                            <span class="icone-editar" title="Editar">✏️</span>
+                            <span class="icone-excluir" title="Excluir">🗑️</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="contatos-frequentes-area" class="contatos-area" style="display:none;">
+                <h2>Contatos Frequentes</h2>
+                <div id="lista-contatos-frequentes"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Informações do Contato -->
+    <div id="modal-info" class="modal-info">
+        <div class="modal-info-content">
+            <span class="close-info">&times;</span>
+            <h3>Informações do Contato</h3>
+            <p><strong>Nome:</strong> <span id="info-nome"></span></p>
+            <p><strong>Telefone:</strong> <span id="info-telefone"></span></p>
+            <p><strong>E-mail:</strong> <span id="info-email"></span></p>
+        </div>
+    </div>
+
+    <!-- Modal de Erro -->
+    <div id="modal-erro" class="modal">
+        <div class="modal-content">
+            <span class="close-erro">&times;</span>
+            <h2 id="mensagem-erro"></h2>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <span class="close-editar">&times;</span>
+            <h2>Editar Contato</h2>
+            <form id="formulario-editar">
+                <label for="editar-nome">Nome:</label>
+                <input type="text" class="modal-input" id="editar-nome" placeholder="Digite o nome" required>
+                <label for="editar-telefone">Telefone:</label>
+                <input type="tel" class="modal-input" id="editar-telefone" placeholder="Digite o telefone" required>
+                <label for="editar-email">E-mail:</label>
+                <input type="email" class="modal-input" id="editar-email" placeholder="Digite o e-mail">
+                <button type="submit">Salvar</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="JS/contato.js"></script>
+</body>
+</html>
